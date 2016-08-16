@@ -1,5 +1,11 @@
 package md.convertit.bazaDeClienti.domain;
 
+/**
+ * This class represents a Clint object
+ * @author User
+ *
+ */
+
 public class Client {
 
 	private long id;
