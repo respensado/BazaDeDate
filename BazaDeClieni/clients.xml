@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clientXmlHelper>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>true</kids>
+        <name>name suriname: 76</name>
+        <phoneNumber>54</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>false</kids>
+        <name>name suriname: 16</name>
+        <phoneNumber>11</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>true</kids>
+        <name>name suriname: 27</name>
+        <phoneNumber>91</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>false</kids>
+        <name>name suriname: 29</name>
+        <phoneNumber>88</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>true</kids>
+        <name>name suriname: 72</name>
+        <phoneNumber>53</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>false</kids>
+        <name>name suriname: 62</name>
+        <phoneNumber>1</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>true</kids>
+        <name>name suriname: 81</name>
+        <phoneNumber>39</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>false</kids>
+        <name>name suriname: 84</name>
+        <phoneNumber>52</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>true</kids>
+        <name>name suriname: 31</name>
+        <phoneNumber>42</phoneNumber>
+    </clientList>
+    <clientList>
+        <addrees>addrees</addrees>
+        <email>contact@mail.com</email>
+        <kids>false</kids>
+        <name>name suriname: 67</name>
+        <phoneNumber>0</phoneNumber>
+    </clientList>
+</clientXmlHelper>
