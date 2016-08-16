@@ -78,7 +78,6 @@ public class Client {
 		return "Client [id=" + id + ", name=" + name + ", kids=" + kids + ", email=" + email + ", phoneNumber="
 				+ phoneNumber + ", addrees=" + addrees + "]";
 	}
-
-	
-	}
+	//this text added by other user
+		}
 
