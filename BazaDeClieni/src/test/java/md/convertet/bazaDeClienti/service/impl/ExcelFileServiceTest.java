@@ -1,5 +1,7 @@
 package md.convertet.bazaDeClienti.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
@@ -18,21 +20,31 @@ public class ExcelFileServiceTest {
  FileService fService = new ExcelFileService();
  
  final String path = "clients.xlsm";
- final int TOTAL_DEMO_USERS = 10;
+ final int TOTAL_DEMO_CLIENTS = 10;
 
  @Before
  public void prepare() throws Exception {
-	 List<Client> clList = DemoData.getDemoClients(TOTAL_DEMO_USERS);
+	 List<Client> clList = DemoData.getDemoClients(TOTAL_DEMO_CLIENTS);
 	 fService.saveAll(clList, path);
  }
  @Test
 	public void saveAllTest() throws Exception {
-		List<Client> usersList = DemoData.getDemoClients(10);
-		assertNotNull(usersList);
-		fService.saveAll(usersList,  path);
+		List<Client> clList = DemoData.getDemoClients(10);
+		assertNotNull(clList);
+		fService.saveAll(clList,  path);
  
  
  
 
+}
+ 
+ @Test
+	public void readAllTest() throws Exception{
+	
+		List<Client>clList = fService.readAll(path);
+		assertNotNull(clList);
+		assertFalse(clList.isEmpty());
+		assertEquals(TOTAL_DEMO_CLIENTS, clList.size());
+ 
 }
 }

@@ -1,6 +1,7 @@
 package md.convertit.bazaDeClienti.services.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -22,8 +23,6 @@ public class ExcelFileService implements FileService {
 
 	private static final Logger log = Logger.getLogger(ExcelFileService.class.getName());
 	private File file;
-	private HSSFWorkbook workbook;
-	private HSSFSheet sheet;
 
 	@Override
 	public void saveAll(List<Client> clients, String path) throws Exception {
@@ -54,24 +53,32 @@ public class ExcelFileService implements FileService {
 
 	@Override
 	public List<Client> readAll(String path) throws Exception {
-		HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-		HSSFSheet sheet = workbook.createSheet();
+		file = new File(path);
+		FileInputStream fis = new FileInputStream(file);
+		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fis);
+		HSSFSheet sheet = hssfWorkbook.createSheet();
 		Iterator<Row> rowIterator = sheet.iterator();
 		
-		while(rowIterator.hasNext()){
+		System.out.println("am deschis row iterator");
+
+		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-			Iterator<Cell > ceIterator = row.cellIterator();
-			while(ceIterator.hasNext()){
+			Iterator<Cell> ceIterator = row.cellIterator();
+			System.out.println("am deschis cell iterator");
+			while (ceIterator.hasNext()) {
 				Cell cell = ceIterator.next();
-				//switch(ceIterator.getC)
-				
+				//switch (cell.getCellType()) {
+				//case Cell.CELL_TYPE_STRING:
+					System.out.println(cell.getStringCellValue());
+					System.out.println("************");
+					//break;
+
+				}
+
 			}
-		
-		
-		
-		
-		return null;
-	}
+
+			
+	
 		return null;
 	}
 }
