@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 
 import md.convertit.bazaDeClienti.domain.Client;
@@ -22,12 +21,12 @@ import md.convertit.bazaDeClienti.services.FileService;
 public class ExcelFileService implements FileService {
 
 	private static final Logger log = Logger.getLogger(ExcelFileService.class.getName());
-	private File file;
+  private File file;
 
 	@Override
 	public void saveAll(List<Client> clients, String path) throws Exception {
-		file = new File(path);
-		FileWriter fileWriter = new FileWriter(file);
+		 file = new File(path);
+	//	FileWriter fileWriter = new FileWriter(file);
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet();
@@ -54,31 +53,59 @@ public class ExcelFileService implements FileService {
 	@Override
 	public List<Client> readAll(String path) throws Exception {
 		file = new File(path);
-		FileInputStream fis = new FileInputStream(file);
-		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fis);
-		HSSFSheet sheet = hssfWorkbook.createSheet();
-		Iterator<Row> rowIterator = sheet.iterator();
-		
+		FileInputStream inputStream = new FileInputStream(new File(path));
+
+		HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+		HSSFSheet sheet = workbook.getSheetAt(0);
+		Iterator<Row> iterator = sheet.iterator();
 		System.out.println("am deschis row iterator");
+		while (iterator.hasNext()) {
+			Row nextRow = iterator.next();
+			Iterator<Cell> cellIterator = nextRow.cellIterator();
 
-		while (rowIterator.hasNext()) {
-			Row row = rowIterator.next();
-			Iterator<Cell> ceIterator = row.cellIterator();
 			System.out.println("am deschis cell iterator");
-			while (ceIterator.hasNext()) {
-				Cell cell = ceIterator.next();
-				//switch (cell.getCellType()) {
-				//case Cell.CELL_TYPE_STRING:
-					System.out.println(cell.getStringCellValue());
+			while (cellIterator.hasNext()) {
+				Cell cell = cellIterator.next();
+
+				switch (cell.getCellType()) {
+				case Cell.CELL_TYPE_STRING:
+					System.out.print(cell.getStringCellValue());
+					break;
+				case Cell.CELL_TYPE_BOOLEAN:
+					System.out.print(cell.getBooleanCellValue());
+					break;
+				case Cell.CELL_TYPE_NUMERIC:
+					System.out.print(cell.getNumericCellValue());
 					System.out.println("************");
-					//break;
-
+					break;
 				}
-
+				System.out.print(" - ");
 			}
+		}
 
-			
+	inputStream.close();
 	
+
+		// file = new File(path);
+		// FileInputStream fis = new FileInputStream(file);
+		// HSSFWorkbook hssfWorkbook = new HSSFWorkbook(fis);
+		// HSSFSheet sheet = hssfWorkbook.createSheet();
+		// Iterator<Row> rowIterator = sheet.iterator();
+
+		// System.out.println("am deschis row iterator");
+
+		// while (rowIterator.hasNext()) {
+		// Row row = rowIterator.next();
+		// Iterator<Cell> ceIterator = row.cellIterator();
+		// System.out.println("am deschis cell iterator");
+		// while (ceIterator.hasNext()) {
+		// Cell cell = ceIterator.next();
+		// switch (cell.getCellType()) {
+		// case Cell.CELL_TYPE_STRING:
+		// System.out.println(cell.getStringCellValue());
+		// System.out.println("************");
+		// break;
+
 		return null;
 	}
 }
