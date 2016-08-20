@@ -5,7 +5,7 @@ import java.util.List;
 
 import md.convertit.bazaDeClienti.domain.Client;
 
-public interface ClintDao {
+public interface ClientDao {
 
 		boolean save(Client client);
 		

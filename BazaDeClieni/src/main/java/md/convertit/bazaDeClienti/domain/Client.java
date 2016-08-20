@@ -2,6 +2,7 @@ package md.convertit.bazaDeClienti.domain;
 
 /**
  * This class represents a Clint object
+ * 
  * @author User
  *
  */
@@ -10,8 +11,9 @@ public class Client {
 
 	private long id;
 	private String name;
-	private boolean kids;
+
 	private String email;
+	private boolean kids;
 	private int phoneNumber;
 	private String addrees;
 
@@ -23,8 +25,9 @@ public class Client {
 		super();
 
 		this.name = name;
-		this.kids = kids;
+
 		this.email = email;
+		this.kids = kids;
 		this.phoneNumber = phoneNumber;
 		this.addrees = addrees;
 	}
@@ -78,6 +81,5 @@ public class Client {
 		return "Client [id=" + id + ", name=" + name + ", kids=" + kids + ", email=" + email + ", phoneNumber="
 				+ phoneNumber + ", addrees=" + addrees + "]";
 	}
-	//this text added by other user
-		}
-
+	// this text added by other user
+}
