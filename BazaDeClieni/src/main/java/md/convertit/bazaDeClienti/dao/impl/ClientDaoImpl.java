@@ -86,5 +86,51 @@ public class ClientDaoImpl implements ClientDao {
 		return cList;
 
 	}
+	@Override
+	public boolean update(Client nClient , Long id) {
+		try {
+			conn = ClientConnectionUtil.getConnection();
+			String sql = "INSERT INTO `clients` (`name`, `email`, `kids`,`phonenumber`,`address`  ) VALUES (?, ?, ?,?,?);";
+			prStat = conn.prepareStatement(sql);
+			prStat.setString(1, nClient.getName());
+			prStat.setString(2, nClient.getEmail());
+			prStat.setBoolean(3, nClient.isKids());
+			prStat.setInt(4, nClient.getPhoneNumber());
+			prStat.setString(5, nClient.getAddrees());
+			
+			int affectedRows = prStat.executeUpdate();
+			log.info(String.format("Update object, total affected rows: %d", affectedRows));
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe(String.format("Exception: %s", e.getMessage()));
+		
+			
+		}
+		return false;
+		}
+	@Override
+	public boolean delete(Long id) {
+
+		try {
+			
+			conn = ClientConnectionUtil.getConnection();
+			String sql = "DELETE FROM `clients` WHERE `id`=? ;";
+			
+			prStat = conn.prepareStatement(sql);
+			prStat.setLong(1, id);
+			prStat.executeUpdate();
+
+			log.info(String.format("Object with id: %d was deleted", id));
+			return true;
+
+		} catch (SQLException e) {
+			
+			log.severe(String.format("Exception: %s", e.getMessage()));
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 }

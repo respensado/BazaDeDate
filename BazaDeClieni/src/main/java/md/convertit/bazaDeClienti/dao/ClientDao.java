@@ -15,6 +15,10 @@ public interface ClientDao {
 		 */
 		List<Client> findAll();
 		//boolean update(Client client, Long id);
+
+		boolean update(Client nClient, Long id);
+
+		boolean delete(Long id);
 		
 	//	boolean delete(Long id);
 		

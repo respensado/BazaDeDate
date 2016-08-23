@@ -5,7 +5,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 import md.convertit.bazaDeClienti.dao.ClientDao;
 import md.convertit.bazaDeClienti.dao.impl.ClientDaoImpl;
 import md.convertit.bazaDeClienti.domain.Client;
@@ -35,6 +34,24 @@ public class ClientDaoImplTest {
 	Assert.assertFalse(allClient.isEmpty());
 	Assert.assertTrue(allClient.size()>0);
 	}
-	
+
+	@Test
+	public void testUpdate() {
+		final Long USER_ID = 7L;
+		Client clients = new Client();
+		clients.setName("newtestName");
+		clients.setKids(true);
+		clients.setEmail("newe@email.com");
+		clients.setPhoneNumber(9099999);
+		clients.setAddrees("newadress");
+	boolean result = cDao.update(clients, USER_ID);
+	Assert.assertTrue(result);
+	}
+	@Test
+	public void testDelete(){
+		final Long USER_ID = 4L;
+		boolean result = cDao.delete(USER_ID);
+		Assert.assertTrue(result);
+	}
 
 }
