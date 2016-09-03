@@ -15,7 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import md.convertit.bazaDeClienti.services.FileService;
 
@@ -48,14 +51,26 @@ public class ClientTableFrame extends JFrame {
 		getContentPane().add(mainPanel);
 
 		setMinimumSize(new Dimension(800, 300));
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		}
 	}
+	
 
 	public void start() {
 
-	addTopPanel();
-	addBottomPanel();
-	addLeftPanel();
-	addRightPanel();
+		addTopPanel();
+		addBottomPanel();
+		addLeftPanel();
+		addRightPanel();
+		
 
 		setVisible(true);
 
@@ -63,66 +78,94 @@ public class ClientTableFrame extends JFrame {
 
 	private void addRightPanel() {
 		JPanel rPanel = new JPanel();
-		
-		rPanel.setBackground(Color.yellow);
 
-		mainPanel.add(rPanel,BorderLayout.EAST);
-		
+		rPanel.setBackground(Color.darkGray);
+
+		mainPanel.add(rPanel, BorderLayout.EAST);
+
 	}
 
 	private void addLeftPanel() {
 		JPanel lPanel = new JPanel();
+		lPanel.setBorder(new TitledBorder(new EtchedBorder(), "Clienti"));
 		BoxLayout boxLayout = new BoxLayout(lPanel, BoxLayout.Y_AXIS);
 		lPanel.setLayout(boxLayout);
-		JLabel nameLabel = new JLabel("Prenumele Numele");
+		//JLabel nameLabel = new JLabel("Prenumele Numele");
 		clientNameTextField = new JTextField(15);
+		clientNameTextField.setBorder(new TitledBorder(new EtchedBorder(), "Numele Pronumele"));
 		clientNameTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		lPanel.add(nameLabel);
+		//lPanel.add(nameLabel);
 		lPanel.add(clientNameTextField);
-		JLabel emailLabel = new JLabel("@email");
+		//JLabel emailLabel = new JLabel("@email");
 		emailTextField = new JTextField(15);
+		emailTextField.setBorder(new TitledBorder(new EtchedBorder(), "Email"));
 		emailTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		lPanel.add(emailLabel);
+		//lPanel.add(emailLabel);
 		lPanel.add(emailTextField);
-		JLabel kidsLabel = new JLabel("Is Kids");
+		//JLabel kidsLabel = new JLabel("Is Kids");
 		kidsTextField = new JTextField(15);
+		kidsTextField.setBorder(new TitledBorder(new EtchedBorder(), "Is Kids"));
+		
 		kidsTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		lPanel.add(kidsLabel);
+		//lPanel.add(kidsLabel);
 		lPanel.add(kidsTextField);
-		JLabel phoneLabel = new JLabel("Phone number");
+		//JLabel phoneLabel = new JLabel("Phone number");
 		phoneTextField = new JTextField(15);
+		phoneTextField.setBorder(new TitledBorder(new EtchedBorder(), "Phone Number"));
+	
 		phoneTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		lPanel.add(phoneLabel);
+		//lPanel.add(phoneLabel);
 		lPanel.add(phoneTextField);
-		JLabel addressLabel = new JLabel("Address");
+		//JLabel addressLabel = new JLabel("Address");
 		addressTextField = new JTextField(15);
+		addressTextField.setBorder(new TitledBorder(new EtchedBorder(), "Address"));
 		addressTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		lPanel.add(addressLabel);
+		//lPanel.add(addressLabel);
 		lPanel.add(addressTextField);
+		lPanel.setBackground(Color.CYAN);
+		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		buttonPanel.setBackground(Color.darkGray);
+		buttonPanel.setBorder(new TitledBorder(new EtchedBorder()));
 		
 		
-		lPanel.setBackground(Color.orange);
+		
+		JButton editButton = new JButton("Edit");
+		editButton.setPreferredSize(new Dimension(55, 22));
+		buttonPanel.add(editButton);
+		JButton saveButton = new JButton("Save");
+		saveButton.setPreferredSize(new Dimension(55, 22));
+		buttonPanel.add(saveButton);
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.setPreferredSize(new Dimension(75, 22));
+		buttonPanel.add(deleteButton);
 
-		mainPanel.add(lPanel,BorderLayout.WEST);
-		
+        lPanel.add(buttonPanel);
+		lPanel.setBackground(Color.gray);
+
+		mainPanel.add(lPanel, BorderLayout.WEST);
+
 	}
 
 	private void addTopPanel() {
-		JPanel tPanel = new JPanel();
+		JPanel tPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton fButton = new JButton("File");
+		fButton.setPreferredSize(new Dimension(55, 22));
 		tPanel.add(fButton);
 		JButton eButton = new JButton("Edit");
+		eButton.setPreferredSize(new Dimension(55, 22));
 		tPanel.add(eButton);
 		JButton hButton = new JButton("Help");
+		hButton.setPreferredSize(new Dimension(65, 22));
 		tPanel.add(hButton);
-		tPanel.setBackground(Color.red);
+		tPanel.setBackground(Color.lightGray);
 
-		mainPanel.add(tPanel,BorderLayout.NORTH);
+		mainPanel.add(tPanel, BorderLayout.NORTH);
 	}
 
 	private void addBottomPanel() {
 		JPanel bPanel = new JPanel();
-		bPanel.setBackground(Color.CYAN);
+		
 		mainPanel.add(bPanel, BorderLayout.SOUTH);
 
 	}
