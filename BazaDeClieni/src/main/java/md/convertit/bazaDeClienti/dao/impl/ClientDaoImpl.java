@@ -16,7 +16,7 @@ import md.convertit.bazaDeClienti.domain.Client;
 import md.convertit.bazaDeClienti.util.ClientConnectionUtil;
 
 public class ClientDaoImpl implements ClientDao {
-	private static final Logger log = Logger.getLogger(ClientDaoImplTest.class.getName());
+	private static final Logger log = Logger.getLogger(ClientDaoImpl.class.getName());
 
 	Connection conn;
 	PreparedStatement prStat;
