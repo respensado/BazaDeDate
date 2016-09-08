@@ -23,7 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
 import md.convertit.bazaDeClienti.domain.Client;
 import md.convertit.bazaDeClienti.gui.model.SqlClientTableModel;
 import md.convertit.bazaDeClienti.services.FileService;
@@ -35,6 +34,7 @@ public class ClientTableFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPanel;
+	private JTextField idClientTextField;
 	private JTextField clientNameTextField;
 	private JTextField emailTextField;
 	private JCheckBox kidsCheckBox;
@@ -50,7 +50,7 @@ public class ClientTableFrame extends JFrame {
 	public ClientTableFrame() throws HeadlessException {
 		super();
 		setTitle("User Manager");
-		setSize(800, 300);
+		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		mainPanel = new JPanel(new BorderLayout());
@@ -99,30 +99,82 @@ public class ClientTableFrame extends JFrame {
 				boolean valid = vallidateFilds();
 				if (valid) {
 					Client client = new Client();
+					client.setId(Long.valueOf(idClientTextField.getText().trim()));
 					client.setName(clientNameTextField.getText().trim());
 					client.setEmail(emailTextField.getText().trim());
 					client.setKids(kidsCheckBox.isSelected());
-					client.setPhoneNumber(Integer.valueOf(phoneTextField.getText().trim()));
+					client.setPhoneNumber(Long.valueOf(phoneTextField.getText().trim()));
 					client.setAddrees(addressTextField.getText().trim());
 
 					SqlClientTableModel clientTableModel = (SqlClientTableModel) table.getModel();
 					clientTableModel.addClients(client);
 
+					idClientTextField.setText("");
 					clientNameTextField.setText("");
 					emailTextField.setText("");
 					kidsCheckBox.isSelected();
 					phoneTextField.setText("");
 					addressTextField.setText("");
+
 				}
 
 			}
 
 		});
 
+		editButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+
+				if (row != -1) {
+					SqlClientTableModel clientTableModel = (SqlClientTableModel) table.getModel();
+					clientTableModel.getClient(row);
+					Client client = clientTableModel.getClient(row);
+					idClientTextField.setText(String.valueOf(client.getId()));
+					clientNameTextField.setText(client.getName());
+					emailTextField.setText(client.getEmail());
+					kidsCheckBox.setSelected(client.isKids());
+					phoneTextField.setText(String.valueOf(client.getPhoneNumber()));
+					addressTextField.setText(client.getAddrees());
+
+				} else {
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Please select a row from table!",
+							"No selected row", JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+		});
+		deleteButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("blabla");
+				int row = table.getSelectedRow();
+
+				if (row != -1) {
+					SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
+
+					Client client = tableModel.getClient(row);
+					System.out.println(row);
+					tableModel.removeClient(client.getId());
+
+				} else {
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Please select a row from table!",
+							"No selected row", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+
 	}
 
 	protected boolean vallidateFilds() {
 		validFields = true;
+
+		if (idClientTextField.getText().isEmpty()) {
+			validFields = false;
+		}
 
 		// validasre nume
 		if (clientNameTextField.getText().isEmpty()) {
@@ -163,6 +215,12 @@ public class ClientTableFrame extends JFrame {
 		BoxLayout boxLayout = new BoxLayout(lPanel, BoxLayout.Y_AXIS);
 		lPanel.setLayout(boxLayout);
 		// JLabel nameLabel = new JLabel("Prenumele Numele");
+
+		idClientTextField = new JTextField(15);
+		idClientTextField.setBorder(new TitledBorder(new EtchedBorder(), "id"));
+		idClientTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+		idClientTextField.setEditable(false);
+		lPanel.add(idClientTextField);
 		clientNameTextField = new JTextField(15);
 		clientNameTextField.setBorder(new TitledBorder(new EtchedBorder(), "Numele Pronumele"));
 		clientNameTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));

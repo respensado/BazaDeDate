@@ -14,7 +14,7 @@ public class Client {
 
 	private String email;
 	private boolean kids;
-	private int phoneNumber;
+	private long phoneNumber;
 	private String addrees;
 
 	public Client() {
@@ -30,6 +30,12 @@ public class Client {
 		this.kids = kids;
 		this.phoneNumber = phoneNumber;
 		this.addrees = addrees;
+	}
+
+
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public long getId() {
@@ -60,11 +66,11 @@ public class Client {
 		this.email = email;
 	}
 
-	public int getPhoneNumber() {
+	public long getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -78,8 +84,12 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", kids=" + kids + ", email=" + email + ", phoneNumber="
+		return "Client [id=" + id + ", name=" + name + ", email=" + email + ", kids=" + kids + ", phoneNumber="
 				+ phoneNumber + ", addrees=" + addrees + "]";
 	}
+
+	
+	
+	
 	// this text added by other user
 }

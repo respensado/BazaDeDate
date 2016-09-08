@@ -76,9 +76,10 @@ public class SqlClientTableModel extends AbstractTableModel {
 
  }
 
- public void removeClient(int row) {
+ public void removeClient(long clientId) {
+//	 System.out.println(row);
 
- clientDao.delete((long)row);
+ clientDao.delete(clientId);
 
  clients = clientDao.findAll();
 
