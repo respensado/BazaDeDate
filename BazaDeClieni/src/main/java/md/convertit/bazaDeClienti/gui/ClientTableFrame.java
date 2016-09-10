@@ -7,13 +7,13 @@ import java.awt.FlowLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,9 +23,14 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+
 import md.convertit.bazaDeClienti.domain.Client;
 import md.convertit.bazaDeClienti.gui.model.SqlClientTableModel;
 import md.convertit.bazaDeClienti.services.FileService;
+import md.convertit.bazaDeClienti.services.impl.JsonFileService;
+import md.convertit.bazaDeClienti.services.impl.XmlFileService;
+import md.convertit.bazaDeClienti.util.ClientFileUtil;
 
 public class ClientTableFrame extends JFrame {
 
@@ -43,6 +48,10 @@ public class ClientTableFrame extends JFrame {
 	private JButton saveButton;
 	private JButton deleteButton;
 	private JButton editButton;
+	//private JButton deleteButoon;
+	private JButton showButoon;
+	private JButton exportJsonButton;
+	private JButton exportXMLButton;
 	private JTable table;
 	private FileService fService;
 	protected boolean validFields;
@@ -98,8 +107,11 @@ public class ClientTableFrame extends JFrame {
 
 				boolean valid = vallidateFilds();
 				if (valid) {
+					System.out.println("valid");
 					Client client = new Client();
-					client.setId(Long.valueOf(idClientTextField.getText().trim()));
+					if (!idClientTextField.getText().isEmpty()) {
+						client.setId(Long.valueOf(idClientTextField.getText().trim()));
+					}
 					client.setName(clientNameTextField.getText().trim());
 					client.setEmail(emailTextField.getText().trim());
 					client.setKids(kidsCheckBox.isSelected());
@@ -166,15 +178,83 @@ public class ClientTableFrame extends JFrame {
 				}
 			}
 		});
+		showButoon.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
 
+				if (row != -1) {
+					SqlClientTableModel  tableModel = (SqlClientTableModel) table.getModel();
+					tableModel.getClient(row);
+				Client client = tableModel.getClient(row);
+					JOptionPane.showMessageDialog(ClientTableFrame.this, client, "Selected user list: ",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Please select a row from table!", "No selected row",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+				
+			
+		});
+		exportJsonButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
+				exportToJson(tableModel.getClient());
+				
+			}
+		});
+		exportXMLButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
+				exportToXML(tableModel.getClient());
+			}
+
+			private void exportToXML(List<Client> client) {
+				fService = new XmlFileService();
+				try {
+					String path = ClientFileUtil.showSavenFileDialo();
+					if(path == null)return; 
+					fService.saveAll(client, path.concat(".xml"));
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported", "Export to XML",
+							JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Error on export to XML", "Export to XML",
+							JOptionPane.ERROR_MESSAGE);
+
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
+
+	protected void exportToJson(List<Client> client) {
+		fService = new JsonFileService();
+		try {
+			String path = ClientFileUtil.showSavenFileDialo();
+			if(path == null)return; 
+			fService.saveAll(client, path.concat(".json"));
+			JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported", "Export to JSON",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(ClientTableFrame.this, "Error on export to JSON", "Export to JSON",
+					JOptionPane.ERROR_MESSAGE);
+
+			e.printStackTrace();
+		}
 	}
 
 	protected boolean vallidateFilds() {
 		validFields = true;
-
-		if (idClientTextField.getText().isEmpty()) {
-			validFields = false;
-		}
 
 		// validasre nume
 		if (clientNameTextField.getText().isEmpty()) {
@@ -298,12 +378,12 @@ public class ClientTableFrame extends JFrame {
 	private void addBottomPanel() {
 		JPanel bPanel = new JPanel();
 
-		JButton deleteButoon = new JButton("Delete");
-		JButton showButoon = new JButton("Show");
-		JButton exportJsonButton = new JButton("Export to JSON");
-		JButton exportXMLButton = new JButton("Export to XML");
+		//deleteButoon = new JButton("Delete");
+		showButoon = new JButton("Show");
+		exportJsonButton = new JButton("Export to JSON");
+		exportXMLButton = new JButton("Export to XML");
 
-		bPanel.add(deleteButoon);
+		//bPanel.add(deleteButoon);
 		bPanel.add(showButoon);
 		bPanel.add(exportJsonButton);
 		bPanel.add(exportXMLButton);

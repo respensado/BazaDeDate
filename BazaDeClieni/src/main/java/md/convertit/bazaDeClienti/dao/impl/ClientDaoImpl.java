@@ -27,12 +27,12 @@ public class ClientDaoImpl implements ClientDao {
 			conn = ClientConnectionUtil.getConnection();
 			String sql = "INSERT INTO `clients` (`name`, `email`, `kids`,`phonenumber`,`address`  ) VALUES (?, ?, ?,?,?);";
 			prStat = conn.prepareStatement(sql);
-			prStat.setLong(1, client.getId());
-			prStat.setString(2, client.getName());
-			prStat.setString(3, client.getEmail());
-			prStat.setBoolean(4, client.isKids());
-			prStat.setLong(5, client.getPhoneNumber());
-			prStat.setString(6, client.getAddrees());
+			//prStat.setLong(1, client.getId());
+			prStat.setString(1, client.getName());
+			prStat.setString(2, client.getEmail());
+			prStat.setBoolean(3, client.isKids());
+			prStat.setLong(4, client.getPhoneNumber());
+			prStat.setString(5, client.getAddrees());
 
 			int affectedRows = prStat.executeUpdate();
 			log.info(String.format("Saved object, total affected rows: %d", affectedRows));
@@ -90,17 +90,18 @@ public class ClientDaoImpl implements ClientDao {
 	}
 
 	@Override
-	public boolean update(Client client, Long id) {
+	public boolean update(Client client) {
 		try {
 			conn = ClientConnectionUtil.getConnection();
-			String sql = "INSERT INTO `clients` (`name`, `email`, `kids`,`phonenumber`,`address`  ) VALUES (?, ?, ?,?,?);";
+			//UPDATE `clist`.`clients` SET `email`='e@email.com ss' WHERE `id`='7';
+			String sql = "UPDATE `clients` SET `name`=?, `email`=?, `kids`=?, `phonenumber`=?, `address`=? WHERE `id`=?;";
 			prStat = conn.prepareStatement(sql);
-			prStat.setLong(1, client.getId());
-			prStat.setString(2, client.getName());
-			prStat.setString(3, client.getEmail());
-			prStat.setBoolean(4, client.isKids());
-			prStat.setLong(5, client.getPhoneNumber());
-			prStat.setString(6, client.getAddrees());
+			prStat.setLong(6, client.getId());
+			prStat.setString(1, client.getName());
+			prStat.setString(2, client.getEmail());
+			prStat.setBoolean(3, client.isKids());
+			prStat.setLong(4, client.getPhoneNumber());
+			prStat.setString(5, client.getAddrees());
 
 			int affectedRows = prStat.executeUpdate();
 			log.info(String.format("Update object, total affected rows: %d", affectedRows));

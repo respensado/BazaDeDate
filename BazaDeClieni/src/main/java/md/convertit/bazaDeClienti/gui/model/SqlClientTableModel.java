@@ -68,7 +68,11 @@ public class SqlClientTableModel extends AbstractTableModel {
 	}
 
  public void addClients(Client client) {
- clientDao.save(client);
+	 if(client.getId()==0){
+		 clientDao.save(client);
+	 } else {
+		 clientDao.update(client);
+	 }
 
  clients = clientDao.findAll();
 

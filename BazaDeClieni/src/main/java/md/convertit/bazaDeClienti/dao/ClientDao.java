@@ -14,9 +14,9 @@ public interface ClientDao {
 		 * @returna a list of {@link User} from database
 		 */
 		List<Client> findAll();
-		//boolean update(Client client, Long id);
+		//boolean update(Client client);
 
-		boolean update(Client nClient, Long id);
+		boolean update(Client nClient);
 
 		boolean delete(Long id);
 		
