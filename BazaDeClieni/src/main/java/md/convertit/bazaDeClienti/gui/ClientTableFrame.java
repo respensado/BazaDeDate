@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,6 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
 
 import md.convertit.bazaDeClienti.domain.Client;
 import md.convertit.bazaDeClienti.gui.model.SqlClientTableModel;
@@ -48,10 +48,20 @@ public class ClientTableFrame extends JFrame {
 	private JButton saveButton;
 	private JButton deleteButton;
 	private JButton editButton;
-	//private JButton deleteButoon;
+	// private JButton deleteButoon;
 	private JButton showButoon;
 	private JButton exportJsonButton;
 	private JButton exportXMLButton;
+	private JButton exportExcelButton;
+	private JTextField roomTextField;
+	private JTextField areaTextField;
+	private JTextField dateTextField;
+	private JTextField priceTextField;
+	private JButton addButton;
+	private JButton startButton;
+	private JButton pauseButton;
+	private JButton finishButton;
+
 	private JTable table;
 	private FileService fService;
 	protected boolean validFields;
@@ -179,37 +189,36 @@ public class ClientTableFrame extends JFrame {
 			}
 		});
 		showButoon.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
 
 				if (row != -1) {
-					SqlClientTableModel  tableModel = (SqlClientTableModel) table.getModel();
+					SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
 					tableModel.getClient(row);
-				Client client = tableModel.getClient(row);
+					Client client = tableModel.getClient(row);
 					JOptionPane.showMessageDialog(ClientTableFrame.this, client, "Selected user list: ",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(ClientTableFrame.this, "Please select a row from table!", "No selected row",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Please select a row from table!",
+							"No selected row", JOptionPane.WARNING_MESSAGE);
 				}
 
 			}
-				
-			
+
 		});
 		exportJsonButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
 				exportToJson(tableModel.getClient());
-				
+
 			}
 		});
 		exportXMLButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
@@ -220,16 +229,45 @@ public class ClientTableFrame extends JFrame {
 				fService = new XmlFileService();
 				try {
 					String path = ClientFileUtil.showSavenFileDialo();
-					if(path == null)return; 
+					if (path == null)
+						return;
 					fService.saveAll(client, path.concat(".xml"));
-					JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported", "Export to XML",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported",
+							"Export to XML", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(ClientTableFrame.this, "Error on export to XML", "Export to XML",
 							JOptionPane.ERROR_MESSAGE);
 
 					e.printStackTrace();
+				}
+			}
+		});
+		exportExcelButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
+				exportToExcel(tableModel.getClient());
+
+			}
+
+			private void exportToExcel(List<Client> client) {
+				fService = new JsonFileService();
+				try {
+					String path = ClientFileUtil.showSavenFileDialo();
+					if (path == null)
+						return;
+					fService.saveAll(client, path.concat(".xls"));
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported",
+							"Export to Excel", JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(ClientTableFrame.this, "Error on export to  Excel", "Export to Excel",
+							JOptionPane.ERROR_MESSAGE);
+
+					e.printStackTrace();
+
 				}
 			}
 		});
@@ -240,7 +278,8 @@ public class ClientTableFrame extends JFrame {
 		fService = new JsonFileService();
 		try {
 			String path = ClientFileUtil.showSavenFileDialo();
-			if(path == null)return; 
+			if (path == null)
+				return;
 			fService.saveAll(client, path.concat(".json"));
 			JOptionPane.showMessageDialog(ClientTableFrame.this, "Users was successfully exported", "Export to JSON",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -281,9 +320,50 @@ public class ClientTableFrame extends JFrame {
 	}
 
 	private void addRightPanel() {
-		JPanel rPanel = new JPanel();
 
-		rPanel.setBackground(Color.darkGray);
+		JPanel rPanel = new JPanel();
+		rPanel.setBorder(new TitledBorder(new EtchedBorder(), "Clienti"));
+		BoxLayout boxLayout = new BoxLayout(rPanel, BoxLayout.Y_AXIS);
+		rPanel.setLayout(boxLayout);
+		roomTextField = new JTextField(15);
+		roomTextField.setBorder(new TitledBorder(new EtchedBorder(), "Room"));
+		roomTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+		rPanel.add(roomTextField);
+		areaTextField = new JTextField(15);
+		areaTextField.setBorder(new TitledBorder(new EtchedBorder(), "Area"));
+		areaTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+		rPanel.add(areaTextField);
+		priceTextField = new JTextField(15);
+		priceTextField.setBorder(new TitledBorder(new EtchedBorder(), "Price"));
+		priceTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+		rPanel.add(priceTextField);
+	     addButton = new JButton("Add");
+	     addButton.setPreferredSize(new Dimension(55, 22));
+		rPanel.add(addButton);
+		dateTextField = new JTextField(15);
+		dateTextField.setBorder(new TitledBorder(new EtchedBorder(), "Date"));
+		dateTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+		rPanel.add(dateTextField);
+		JPanel rButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		rButtonPanel.setBackground(Color.darkGray);
+		rButtonPanel.setBorder(new TitledBorder(new EtchedBorder()));
+		startButton = new JButton("Start");
+		startButton.setPreferredSize(new Dimension(55, 22));
+		rButtonPanel.add(startButton);
+		pauseButton = new JButton("Pause");
+		pauseButton.setPreferredSize(new Dimension(55, 22));
+		rButtonPanel.add(pauseButton);
+
+		
+		finishButton = new JButton("Finish");
+		finishButton .setPreferredSize(new Dimension(75, 22));
+		rButtonPanel .add(finishButton );
+
+		rPanel.add(rButtonPanel);
+
+		
+		rPanel.setBackground(Color.gray);
+		
 
 		mainPanel.add(rPanel, BorderLayout.EAST);
 
@@ -378,15 +458,17 @@ public class ClientTableFrame extends JFrame {
 	private void addBottomPanel() {
 		JPanel bPanel = new JPanel();
 
-		//deleteButoon = new JButton("Delete");
+		// deleteButoon = new JButton("Delete");
 		showButoon = new JButton("Show");
 		exportJsonButton = new JButton("Export to JSON");
 		exportXMLButton = new JButton("Export to XML");
+		exportExcelButton = new JButton("Export to Excel");
 
-		//bPanel.add(deleteButoon);
+		// bPanel.add(deleteButoon);
 		bPanel.add(showButoon);
 		bPanel.add(exportJsonButton);
 		bPanel.add(exportXMLButton);
+		bPanel.add(exportExcelButton);
 		mainPanel.add(bPanel, BorderLayout.SOUTH);
 
 	}

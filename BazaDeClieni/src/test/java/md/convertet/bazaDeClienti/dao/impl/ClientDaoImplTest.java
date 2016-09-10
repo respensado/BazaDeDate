@@ -39,13 +39,14 @@ public class ClientDaoImplTest {
 	public void testUpdate() {
 		final Long USER_ID = 7L;
 		Client clients = new Client();
+		clients.setId(USER_ID);
 		clients.setName("newtestName");
 		clients.setKids(true);
 		clients.setEmail("newe@email.com");
 		clients.setPhoneNumber(9099999);
 		clients.setAddrees("newadress");
-	boolean result = cDao.update(clients, USER_ID);
-	Assert.assertTrue(result);
+		boolean result = cDao.update(clients);
+		Assert.assertTrue(result);
 	}
 	@Test
 	public void testDelete(){
