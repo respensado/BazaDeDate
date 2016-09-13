@@ -4,10 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -27,6 +28,7 @@ import javax.swing.border.TitledBorder;
 
 import md.convertit.bazaDeClienti.domain.Client;
 import md.convertit.bazaDeClienti.gui.model.SqlClientTableModel;
+import md.convertit.bazaDeClienti.gui.table.ButtonRenderer;
 import md.convertit.bazaDeClienti.services.FileService;
 import md.convertit.bazaDeClienti.services.impl.JsonFileService;
 import md.convertit.bazaDeClienti.services.impl.XmlFileService;
@@ -82,6 +84,9 @@ public class ClientTableFrame extends JFrame {
 
 		mainPanel.add(sPane, BorderLayout.CENTER);
 		table.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+		table.getColumn("Task").setCellRenderer(new ButtonRenderer());
+		// table.getColumn("Task").setCellEditor(
+		// new ButtonEditor(new JCheckBox()));
 
 		setMinimumSize(new Dimension(800, 300));
 		try {
@@ -102,7 +107,7 @@ public class ClientTableFrame extends JFrame {
 		addTopPanel();
 		addBottomPanel();
 		addLeftPanel();
-		addRightPanel();
+		//addRightPanel();
 		addActionListener();
 
 		setVisible(true);
@@ -110,6 +115,24 @@ public class ClientTableFrame extends JFrame {
 	}
 
 	private void addActionListener() {
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					int row = target.getSelectedRow();
+					int column = target.getSelectedColumn();
+					if (column == 6) {
+						System.out.println("A fost apasat Task button de pe rindul " + row);
+						int roww = table.getSelectedRow();
+						SqlClientTableModel tableModel = (SqlClientTableModel) table.getModel();
+						Client client = tableModel.getClient(roww);
+						JOptionPane.showMessageDialog(null, client.getId());
+					}
+				}
+			}
+		});
+
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -319,55 +342,7 @@ public class ClientTableFrame extends JFrame {
 		return validFields;
 	}
 
-	private void addRightPanel() {
-
-		JPanel rPanel = new JPanel();
-		rPanel.setBorder(new TitledBorder(new EtchedBorder(), "Clienti"));
-		BoxLayout boxLayout = new BoxLayout(rPanel, BoxLayout.Y_AXIS);
-		rPanel.setLayout(boxLayout);
-		roomTextField = new JTextField(15);
-		roomTextField.setBorder(new TitledBorder(new EtchedBorder(), "Room"));
-		roomTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-		rPanel.add(roomTextField);
-		areaTextField = new JTextField(15);
-		areaTextField.setBorder(new TitledBorder(new EtchedBorder(), "Area"));
-		areaTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-		rPanel.add(areaTextField);
-		priceTextField = new JTextField(15);
-		priceTextField.setBorder(new TitledBorder(new EtchedBorder(), "Price"));
-		priceTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-		rPanel.add(priceTextField);
-	     addButton = new JButton("Add");
-	     addButton.setPreferredSize(new Dimension(55, 22));
-		rPanel.add(addButton);
-		dateTextField = new JTextField(15);
-		dateTextField.setBorder(new TitledBorder(new EtchedBorder(), "Date"));
-		dateTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-		rPanel.add(dateTextField);
-		JPanel rButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		rButtonPanel.setBackground(Color.darkGray);
-		rButtonPanel.setBorder(new TitledBorder(new EtchedBorder()));
-		startButton = new JButton("Start");
-		startButton.setPreferredSize(new Dimension(55, 22));
-		rButtonPanel.add(startButton);
-		pauseButton = new JButton("Pause");
-		pauseButton.setPreferredSize(new Dimension(55, 22));
-		rButtonPanel.add(pauseButton);
-
-		
-		finishButton = new JButton("Finish");
-		finishButton .setPreferredSize(new Dimension(75, 22));
-		rButtonPanel .add(finishButton );
-
-		rPanel.add(rButtonPanel);
-
-		
-		rPanel.setBackground(Color.gray);
-		
-
-		mainPanel.add(rPanel, BorderLayout.EAST);
-
-	}
+	
 
 	private void addLeftPanel() {
 		JPanel lPanel = new JPanel();
@@ -380,6 +355,7 @@ public class ClientTableFrame extends JFrame {
 		idClientTextField.setBorder(new TitledBorder(new EtchedBorder(), "id"));
 		idClientTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 		idClientTextField.setEditable(false);
+
 		lPanel.add(idClientTextField);
 		clientNameTextField = new JTextField(15);
 		clientNameTextField.setBorder(new TitledBorder(new EtchedBorder(), "Numele Pronumele"));

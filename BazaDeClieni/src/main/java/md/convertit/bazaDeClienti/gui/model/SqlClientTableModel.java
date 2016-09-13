@@ -18,7 +18,7 @@ public class SqlClientTableModel extends AbstractTableModel {
 
 	private List<Client> clients = new ArrayList<>();
 
-	private String[] columnNames = { "ID", "Suriname", "Email", "Is Kids", "Phone Number", "Addres" };
+	private String[] columnNames = { "ID", "Suriname", "Email", "Is Kids", "Phone Number", "Addres", "Task" };
 
 	public List<Client> getClient() {
 		return clients;
@@ -56,7 +56,8 @@ public class SqlClientTableModel extends AbstractTableModel {
 
 		} else if (column == 5) {
 			return client.getAddrees();
-
+		} else if (column ==6) {
+			return "Task";
 		}
 
 		return clients;
